@@ -83,7 +83,7 @@ int main()
         // Putting a newline before each step for ease of play
         // Also printing the number of the current step
         puts("");
-        printf("Step number: %d\n", num_of_steps);
+        printf("Step count: %d\n", num_of_steps);
 
         // Add snake body to grid
         for (i = 0; i < snake_len; i++)
@@ -132,47 +132,69 @@ int main()
         }        
 
         // Now ask user for the direction, for the head movement
-        printf("Which direction(L/R/U/D)? ");
-        scanf(" %c", &head_direction);
-        switch (head_direction)
+        // Ask again if user gives an undefined answer
+        head_direction = ' ';
+        while (head_direction == ' ')
         {
-            case 'l':
-                snake_body[0][1]--;
-                break;
-            case 'r':
-                snake_body[0][1]++;
-                break;
-            case 'u':
-                snake_body[0][0]--;
-                break;
-            case 'd':
-                snake_body[0][0]++;
-                break;
+            printf("Which direction(L/R/U/D)? ");
+            scanf(" %c", &head_direction);
+            switch (head_direction)
+            {
+                case 'l':
+                    snake_body[0][1]--;
+                    break;
+                case 'r':
+                    snake_body[0][1]++;
+                    break;
+                case 'u':
+                    snake_body[0][0]--;
+                    break;
+                case 'd':
+                    snake_body[0][0]++;
+                    break;
+
+                case 'L':
+                    snake_body[0][1]--;
+                    break;
+                case 'R':
+                    snake_body[0][1]++;
+                    break;
+                case 'U':
+                    snake_body[0][0]--;
+                    break;
+                case 'D':
+                    snake_body[0][0]++;
+                    break;
+
+                default:
+                    puts("Undefined direction. Try again.");
+                    head_direction = ' ';
+            }
         }
 
-        // Testing for a wall crashing
+        // Defining snakey and snakex as head's coordinates.
+        // They will be used this way until end of the code.
         snakey = snake_body[0][0];
         snakex = snake_body[0][1];
+
+        // Testing for a wall crashing
         if (snakey < 0 || snakey > n_rows-1)
             game_running = 0;
         if (snakex < 0 || snakex > n_cols-1)
             game_running = 0;
 
+        // Checking the grid for an overlap between snake's
+        // head and the body.
+        // Defining snakey and snakex to snake's head's coordinates
+        // at wall crash test.
+        for (i = 1; i < snake_len; i++)
+            if (snakey == snake_body[i][0] && snakex == snake_body[i][1])
+                game_running = 0;
+
         // Checking if snake's head is on food or not.
         // Snake grows in the next step if it's head
         // touches the food.
-        if (on_food == 0)
-        {
-            snakey = snake_body[0][0];
-            snakex = snake_body[0][1];
-            if (grid[snakey][snakex] == 0)
-            {
-                on_food = 1;
-                lasty = snake_body[snake_len-1][0];
-                lastx = snake_body[snake_len-1][1];
-            }
-        }
-        else
+        if (on_food == 1)
         {
             snake_len++;
             snake_body[snake_len-1][0] = lasty;
@@ -182,6 +204,12 @@ int main()
             // Also game over if there are no food left on the grid
             if (total_food == snake_len-1)
                 game_running = 0;
+        }
+        if (grid[snakey][snakex] == 0)
+        {
+            on_food = 1;
+            lasty = snake_body[snake_len-1][0];
+            lastx = snake_body[snake_len-1][1];
         }
 
         if (game_running)
