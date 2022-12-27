@@ -83,23 +83,30 @@ int main()
 
     // Printing the initial state of the grid with
     // a border around it.
+    // Using ANSI escape codes to color the snake
+    // and fruits on the grid.
     grid[heady][headx] = 1;
-    for (j = 0; j < n_cols+2; j++)
-        printf("X");
+    printf("#");
+    for (j = 0; j < n_cols; j++)
+        printf("###");
+    printf("#");
     puts("");
     for (i = 0; i < n_rows; i++)
     {
-        printf("X");
+        printf("#");
         for (j = 0; j < n_cols; j++)
-            if (grid[i][j] != -1)
-                printf("%d", grid[i][j]);
+            if (grid[i][j] > 0)
+                printf("\e[31m%3d\e[0m", grid[i][j]);
+            else if (grid[i][j] == 0)
+                printf("\e[32m%3d\e[0m", grid[i][j]);
             else
-                printf(" ");
-        printf("X\n");
+                printf("   ");
+        printf("#\n");
     }
-    for (j = 0; j < n_cols+2; j++)
-        printf("X");
-    puts("");
+    printf("#");
+    for (j = 0; j < n_cols; j++)
+        printf("###");
+    printf("#\n");
     grid[heady][headx] = -1;
 
     // The loop of the game
@@ -211,22 +218,27 @@ int main()
         // First, prints the top border. Then prints left
         // and right border sections while printing rows of the grid.
         // Finally, prints the bottom of the border.
-        for (j = 0; j < n_cols+2; j++)
-            printf("X");
-        puts("");
-        for (i = 0; i < n_rows; i++)
-        {
-            printf("X");
-            for (j = 0; j < n_cols; j++)
-                if (grid[i][j] != -1)
-                    printf("%d", grid[i][j]);
-                else
-                    printf(" ");
-            printf("X\n");
-        }
-        for (j = 0; j < n_cols+2; j++)
-            printf("X");
-        puts("");
+    printf("#");
+    for (j = 0; j < n_cols; j++)
+        printf("###");
+    printf("#");
+    puts("");
+    for (i = 0; i < n_rows; i++)
+    {
+        printf("#");
+        for (j = 0; j < n_cols; j++)
+            if (grid[i][j] > 0)
+                printf("\e[31m%3d\e[0m", grid[i][j]);
+            else if (grid[i][j] == 0)
+                printf("\e[32m%3d\e[0m", grid[i][j]);
+            else
+                printf("   ");
+        printf("#\n");
+    }
+    printf("#");
+    for (j = 0; j < n_cols; j++)
+        printf("###");
+    printf("#\n");
 
         // Removing the snake from the grid
         for (i = 0; i < snake_len; i++)
