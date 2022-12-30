@@ -13,9 +13,11 @@
             ],
             "compilerPath": "C:\\msys64\\ucrt64\\bin\\gcc.exe",
             "compilerArgs": [
-                "-Wall"
+                "-Wall",
+                "-ansi",
+                "-pedantic"
             ],
-            "cStandard": "gnu17",
+            "cStandard": "c89",
             "cppStandard": "gnu++17",
             "intelliSenseMode": "windows-gcc-x64"
         }
