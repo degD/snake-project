@@ -21,10 +21,18 @@ int main()
     puts("SNAKE GROWTH GAME");
 
     /* Getting grid length and height */
-    printf("Enter grid row number: ");
-    scanf("%d", &n_rows);
-    printf("Enter grid column number: ");
-    scanf("%d", &n_cols);
+    n_rows = 0;
+    n_cols = 0;
+    while (n_rows < 2 || n_cols < 2)
+    {
+        printf("Enter grid row number: ");
+        scanf("%d", &n_rows);
+        printf("Enter grid column number: ");
+        scanf("%d", &n_cols);
+
+        if (n_rows < 2 || n_cols < 2)
+            printf("Improper numbers. Try again.\n");
+    }
 
     /* Clearing the grid before the use */
     for (i = 0; i < n_rows; i++)
@@ -52,20 +60,20 @@ int main()
     total_food = food_count;
     while (food_count > 0)
     {
-        foody = rand() % (n_rows-1);
-        foodx = rand() % (n_cols-1);
-        if (grid[foody][foodx] == 0)
-            continue;
-        
-        grid[foody][foodx] = 0;
-        food_count--;
+        foody = rand() % n_rows;
+        foodx = rand() % n_cols;
+        if (grid[foody][foodx] != 0)
+        {
+            grid[foody][foodx] = 0;
+            food_count--;
+        }
     }
 
     /* Randomly selecting snake start location */
     do 
     {
-        heady = rand() % (n_rows-1);
-        headx = rand() % (n_cols-1);
+        heady = rand() % n_rows;
+        headx = rand() % n_cols;
         if (grid[heady][headx] != 0)
         {
             snake_body[0][0] = heady;
