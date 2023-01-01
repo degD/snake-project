@@ -6,7 +6,7 @@
 int main()
 {   
     int i, j;
-    int game_running = 1, on_food = 0;
+    int game_running = 1, on_food = 0, wall_crash = 0;
     int snake_body[5000][2], snakey, snakex, heady, headx, lasty, lastx;
     int num_of_steps = 1, snake_len = 1;
     int total_food, food_count = 0, foody, foodx;
@@ -129,37 +129,19 @@ int main()
         {
             printf("Which direction(L/R/U/D)? ");
             scanf(" %c", &head_direction);
-            switch (head_direction)
+            
+            if (head_direction == 'l' || head_direction == 'L')
+                headx--;
+            else if (head_direction == 'r' || head_direction == 'R')
+                headx++;
+            else if (head_direction == 'u' || head_direction == 'U')
+                heady--;
+            else if (head_direction == 'd' || head_direction == 'D')
+                heady++;
+            else 
             {
-                case 'l':
-                    headx--;
-                    break;
-                case 'r':
-                    headx++;
-                    break;
-                case 'u':
-                    heady--;
-                    break;
-                case 'd':
-                    heady++;
-                    break;
-
-                case 'L':
-                    headx--;
-                    break;
-                case 'R':
-                    headx++;
-                    break;
-                case 'U':
-                    heady--;
-                    break;
-                case 'D':
-                    heady++;
-                    break;
-
-                default:
-                    puts("Undefined direction. Try again.");
-                    head_direction = ' ';
+                printf("Undefined direction. Try again.\n");
+                head_direction = ' ';
             }
         }
 
@@ -175,41 +157,49 @@ int main()
         snake_body[0][0] = heady;
         snake_body[0][1] = headx; 
 
+        /* Testing for a wall crashing */
+        if (heady < 0 || heady > n_rows-1)
+        {
+            snake_len = 0;
+            game_running = 0;
+        }
+        if (headx < 0 || headx > n_cols-1)
+        {
+            snake_len = 0;
+            game_running = 0;
+        }
+
         /* Checking if snake's head is on food or not. */
         /* Snake grows in the next step if it's head */
         /* touches the food. */
-        if (on_food == 1)
+        if (game_running)
         {
-            snake_len++;
-            snake_body[snake_len-1][0] = lasty;
-            snake_body[snake_len-1][1] = lastx;
-            on_food = 0;
+            if (on_food == 1)
+            {
+                snake_len++;
+                snake_body[snake_len-1][0] = lasty;
+                snake_body[snake_len-1][1] = lastx;
+                on_food = 0;
 
+            }
+            if (grid[heady][headx] == 0)
+            {
+                on_food = 1;
+                lasty = snake_body[snake_len-1][0];
+                lastx = snake_body[snake_len-1][1];
+                food_count++;
+
+                /* Also game over if there are no food left on the grid */
+                if (total_food == food_count)
+                    game_running = 0;
+            }
         }
-        if (grid[heady][headx] == 0)
-        {
-            on_food = 1;
-            lasty = snake_body[snake_len-1][0];
-            lastx = snake_body[snake_len-1][1];
-            food_count++;
-
-            /* Also game over if there are no food left on the grid */
-            if (total_food == food_count)
-                game_running = 0;
-        }
-
-        /* Testing for a wall crashing */
-        if (heady < 0 || heady > n_rows-1)
-            game_running = 0;
-        if (headx < 0 || headx > n_cols-1)
-            game_running = 0;
 
         /* Checking the grid for an overlap between snake's */
         /* head and the body. */
         for (i = 1; i < snake_len; i++)
             if (heady == snake_body[i][0] && headx == snake_body[i][1])
                 game_running = 0;
-
 
         /* Add snake body to grid */
         for (i = 0; i < snake_len; i++)
@@ -262,7 +252,7 @@ int main()
     puts("");
     puts("GAME OVER");
     printf("You have survived for %d steps.\n", num_of_steps);
-    printf("Your snake have grown to size %d.\n", snake_len);
+    printf("Your snake have grown to size %d.\n", food_count+1);
     printf("You have eaten %d food(s).\n", food_count);
     printf("%d food(s) remained on the grid.\n", total_food-food_count);
 
