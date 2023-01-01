@@ -6,7 +6,7 @@
 int main()
 {   
     int i, j;
-    int game_running = 1, on_food = 0, wall_crash = 0;
+    int game_running = 1, on_food = 0;
     int snake_body[5000][2], snakey, snakex, heady, headx, lasty, lastx;
     int num_of_steps = 1, snake_len = 1;
     int total_food, food_count = 0, foody, foodx;
