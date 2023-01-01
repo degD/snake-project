@@ -213,27 +213,27 @@ int main()
         /* First, prints the top border. Then prints left */
         /* and right border sections while printing rows of the grid. */
         /* Finally, prints the bottom of the border. */
-    printf("#");
-    for (j = 0; j < n_cols; j++)
-        printf("###");
-    printf("#");
-    puts("");
-    for (i = 0; i < n_rows; i++)
-    {
         printf("#");
         for (j = 0; j < n_cols; j++)
-            if (grid[i][j] > 0)
-                printf("\033[31m%3d\033[0m", grid[i][j]);
-            else if (grid[i][j] == 0)
-                printf("\033[32m%3d\033[0m", grid[i][j]);
-            else
-                printf("   ");
+            printf("###");
+        printf("#");
+        puts("");
+        for (i = 0; i < n_rows; i++)
+        {
+            printf("#");
+            for (j = 0; j < n_cols; j++)
+                if (grid[i][j] > 0)
+                    printf("\033[31m%3d\033[0m", grid[i][j]);
+                else if (grid[i][j] == 0)
+                    printf("\033[32m%3d\033[0m", grid[i][j]);
+                else
+                    printf("   ");
+            printf("#\n");
+        }
+        printf("#");
+        for (j = 0; j < n_cols; j++)
+            printf("###");
         printf("#\n");
-    }
-    printf("#");
-    for (j = 0; j < n_cols; j++)
-        printf("###");
-    printf("#\n");
 
         /* Removing the snake from the grid */
         for (i = 0; i < snake_len; i++)
