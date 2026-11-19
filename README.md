@@ -1,2 +1,3 @@
 # snake-project
-Snake game for my semester project
+
+Simple snake game written in C. Read the source for details.
